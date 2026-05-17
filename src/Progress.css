@@ -1,0 +1,32 @@
+.progress-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: sans-serif;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.progress-percent {
+  font-weight: bold;
+  color: #36a520;
+}
+
+.progress-bar {
+  width: 100%;
+  background: #e2e8f0;
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #0c7840;
+  height: 100%;
+  transition: width 0.3s ease;
+}

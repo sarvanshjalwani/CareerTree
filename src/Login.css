@@ -1,0 +1,109 @@
+.page-login {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #92f1a8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card-login {
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card-login:hover {
+  transform: translateY(-5px);
+}
+
+.title-login {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #00796b;
+}
+
+.subtitle-login {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.input-login {
+  display: block;
+  width: 100%;
+  padding: 0.65rem;
+  margin: 0.6rem 0;
+  border: 1.5px solid #b2dfdb;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.input-login:focus {
+  border-color: #00796b;
+}
+
+.button-login {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background-color: #00796b;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.button-login:hover {
+  background-color: #004d40;
+  transform: translateY(-2px);
+}
+
+.button-login:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.link {
+  color: #00796b;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.message {
+  margin-top: 1rem;
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+.form-login input[type="text"] {
+  border: 2px dashed #00796b;
+  background-color: #e0f2f1;
+  font-weight: bold;
+}
+
+.form-login p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #555;
+}
+
+.step-verify {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 121, 107, 0.3); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 121, 107, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 121, 107, 0); }
+}

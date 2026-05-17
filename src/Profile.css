@@ -1,0 +1,236 @@
+.page {
+  font-family: 'Arial', sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #333;
+}
+
+.title {
+  text-align: center;
+  font-size: 32px;
+  margin: 40px 0 20px 0;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.5px;
+}
+
+.section {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin: 25px auto;
+  max-width: 800px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.section h2 {
+  margin-bottom: 22px;
+  font-size: 24px;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+.handles-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.handles-form input {
+  padding: 12px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.handles-form input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.handles-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.handles-form button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.handles-display {
+  text-align: center;
+  font-size: 16px;
+  color: #444;
+  margin-top: 20px;
+}
+
+.handles-display p {
+  margin: 10px 0;
+}
+
+.handles-display strong {
+  color: #000;
+}
+
+.handles-display button {
+  margin-top: 12px;
+  background-color: #ffb84d;
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.handles-display button:hover {
+  background-color: #ffa31a;
+  transform: translateY(-2px);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+  margin: 35px auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.card {
+  background: #fff;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.card h2 {
+  margin-bottom: 12px;
+  font-size: 19px;
+  color: #333;
+}
+
+.number {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #007bff;
+}
+
+.label {
+  font-size: 14px;
+  color: #666;
+}
+
+.sp{
+  display: flex;
+}
+
+.skill {
+  margin-bottom: 18px;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.progress-bar {
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 12px;
+  margin-top: 6px;
+}
+
+.progress-fill {
+  background: orange;
+  height: 100%;
+  transition: width 0.4s ease, background 0.3s ease;
+}
+
+.progress-fill.blue {
+  background: #007bff;
+}
+
+.logout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 35px 0;
+}
+
+.logout-btn {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-size: 16px;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .handles-form input,
+  .handles-form button {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .section {
+    width: 95%;
+    padding: 18px 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .number {
+    font-size: 24px;
+  }
+
+  .logout-btn {
+    width: 90%;
+  }
+}
