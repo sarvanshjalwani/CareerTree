@@ -103,6 +103,15 @@ export default function Map2({ user }) {
     <div className="map-container">
       <Vines />
       <Header />
+      <section className="roadmap-intro">
+        <p className="roadmap-label">DATA STRUCTURES &amp; ALGORITHMS ROADMAP</p>
+        <h1>Build problem-solving skills one topic at a time</h1>
+        <p>
+          Follow the connected topics in order or revisit an area you want to
+          strengthen. Select a lesson node for its explanations and practice
+          questions, then check off topics as you complete them.
+        </p>
+      </section>
       <div className="map-content">
         {[...nodes, ...subnodes].map(node => (
           <Node

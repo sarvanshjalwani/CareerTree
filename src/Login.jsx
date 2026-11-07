@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { apiRequest } from "./api";
+import ThemeToggle from "./ThemeToggle";
 import "./Login.css";
 
 async function postJson(path, body) {
@@ -84,6 +85,7 @@ export default function Login({ onLogin, initialMessage = "" }) {
   return (
     <div className="page-login">
       <div className="card-login">
+        <div className="login-theme-toggle"><ThemeToggle /></div>
         <h1 className="title-login">🌳 Career Tree</h1>
         <p className="subtitle-login">
           {step === "login"
@@ -93,6 +95,17 @@ export default function Login({ onLogin, initialMessage = "" }) {
               : step === "verify"
                 ? "Verify your email"
                 : "Reset password"}
+        </p>
+        <p className="auth-description">
+          {step === "login"
+            ? "Sign in to continue your coding roadmaps and saved progress."
+            : step === "signup"
+              ? "Create an account to save completed topics and access your learning dashboard."
+              : step === "verify"
+                ? "Enter the six-digit code sent to your email to verify your account."
+                : step === "forgot"
+                  ? "Enter your account email and we will send a password reset code if an account is registered."
+                  : "Enter the reset code from your email and choose a new password."}
         </p>
         {step !== "verify" && (
           <div className="form-login">

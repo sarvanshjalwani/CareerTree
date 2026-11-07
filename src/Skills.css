@@ -1,6 +1,46 @@
+.skills-page {
+  min-height: 60vh;
+  padding: 20px;
+}
+
+.skills-intro {
+  max-width: 820px;
+  margin: 28px auto;
+  padding: 28px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(20, 83, 45, 0.1);
+}
+
+.skills-intro h1 {
+  margin: 6px 0 12px;
+  color: #166534;
+}
+
+.skills-intro p {
+  line-height: 1.65;
+}
+
+.skills-eyebrow {
+  margin: 0;
+  color: #15803d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
 .cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  margin: 10px;
-  justify-content: space-around;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  align-items: stretch;
+  gap: 20px;
+  width: min(1200px, calc(100% - 24px));
+  margin: 10px auto 36px;
+}
+
+@media (max-width: 700px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
 }

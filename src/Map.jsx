@@ -83,6 +83,15 @@ export default function Map2({ user }) {
     <div className="map-container">
       <Vines />
       <Header />
+      <section className="roadmap-intro">
+        <p className="roadmap-label">C PROGRAMMING ROADMAP</p>
+        <h1>Follow the path from fundamentals to practice</h1>
+        <p>
+          The connected nodes show the learning sequence. Select a lesson node to
+          open its explanations, videos, and practice material. Use the checkboxes
+          beside topics to keep track of what you have completed.
+        </p>
+      </section>
       <div className="map-content">
         {[...nodes, ...subnodes].map(node => (
           <Node

@@ -5,7 +5,9 @@ export const nodes = [
     { id: "n3", text: "Binary Search" },
     { id: "n4", text: "Strings" },
     { id: "n5", text: "Linked Lists" },
-    { id: "n6", text: "Recursion" }
+    { id: "n6", text: "Recursion" },
+    { id: "n7", text: "C++ Foundations" },
+    { id: "n8", text: "C++ STL & Problem Solving" }
 ];
 export const subnodes = [
     {
@@ -187,7 +189,10 @@ export const subnodes = [
     ],
 
     compiler: true,
-    question: []
+    question: [
+        "Write a C++ program that left-rotates an array by D positions using the reversal algorithm.",
+        "What is the result of rotating [1, 2, 3, 4, 5] left by 7 positions? Explain how reducing D modulo the array length helps."
+    ]
 }
    ,
     {
@@ -928,7 +933,240 @@ content: [
         "Generate all subsequences of a given string.",
         "Generate all subsequences of an array whose sum equals K."
     ]
-}
+},
+    {
+        id: "s16",
+        parentId: "n7",
+        text: "C++ Program Structure & Compilation",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "A C++ program is written in source files, commonly using the .cpp extension. A compiler translates source code into an executable program.",
+            "A minimal program includes the iostream header and defines int main(). Statements inside main run when the program starts; returning zero conventionally indicates success.",
+            "Use std::cout to display output and std::cin to read input. The newline character '\\n' ends a line without necessarily forcing an immediate output flush.",
+            "A typical compile command is g++ -std=c++17 main.cpp -o program. Compiler warnings help identify mistakes early and should be taken seriously."
+        ],
+        question: [
+            "Write a C++ program that prints your name and returns zero from main.",
+            "Explain the roles of the source file, compiler, and executable."
+        ]
+    },
+    {
+        id: "s17",
+        parentId: "n7",
+        text: "Types, Variables & Input/Output",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "Variables name values that have types. Common built-in types include int, long long, double, char, and bool; std::string represents text.",
+            "Choose a type that can represent the full range of values your problem requires. Integer arithmetic can overflow when a result exceeds the type's range.",
+            "Use std::cin to read values and std::cout to print results. The extraction operator reads whitespace-separated input; getline reads a complete line.",
+            "Prefer initialized variables and const for values that should not change. Clear names and explicit types make algorithms easier to understand."
+        ],
+        question: [
+            "Read two integers and print their sum using a type that safely handles large values.",
+            "Read a full name containing spaces with getline and print a greeting."
+        ]
+    },
+    {
+        id: "s18",
+        parentId: "n7",
+        text: "Conditions, Loops & Basic Logic",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "Use if, else if, and else to choose behavior based on boolean conditions. Combine comparisons with &&, ||, and ! when the logic needs multiple checks.",
+            "A for loop is useful when the iteration count is known. A while loop repeats as long as a condition remains true.",
+            "Watch loop boundaries carefully: arrays and vectors use zero-based indexes, so a collection of size n has valid indexes from zero through n minus one.",
+            "Trace small inputs by hand to verify conditions and termination. A loop must make progress toward its stopping condition."
+        ],
+        question: [
+            "Write a loop that prints the integers from 1 through N.",
+            "Given an integer, use conditions to report whether it is positive, negative, or zero."
+        ]
+    },
+    {
+        id: "s19",
+        parentId: "n7",
+        text: "Functions, References & Scope",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "Functions give a name to reusable work. A function declaration describes its return type, name, and parameters; its definition contains the implementation.",
+            "Pass small values by value when a function should receive an independent copy. Use const references for large read-only objects to avoid copying.",
+            "A non-const reference can let a function update a caller's variable. Use this deliberately and make side effects clear in the function name and interface.",
+            "Local variables exist within their scope. Keep state local where possible so functions are easier to test and reason about."
+        ],
+        question: [
+            "Write a function that returns the larger of two integers.",
+            "Create a function that counts values in a vector without copying the vector."
+        ]
+    },
+    {
+        id: "s20",
+        parentId: "n7",
+        text: "Time & Space Complexity",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "Complexity describes how an algorithm's resource use grows with input size. Big O notation is commonly used to express an upper bound on growth.",
+            "A single pass over n values is O(n); two nested passes over the same n values are often O(n squared). Repeatedly halving a search range is O(log n).",
+            "Space complexity accounts for additional memory, such as temporary arrays, recursion stacks, and stored results.",
+            "Analyze the dominant growth term and ignore constant factors for large inputs. Then consider input constraints before choosing an approach."
+        ],
+        question: [
+            "State the time complexity of finding the maximum in an unsorted array.",
+            "Compare the time complexity of linear search and binary search, including binary search's sorted-input requirement."
+        ]
+    },
+    {
+        id: "s21",
+        parentId: "n8",
+        text: "C++ Iterators & STL Algorithms",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "Iterators provide a common way to refer to positions in containers. begin() points to the first element and end() points just past the final element.",
+            "The algorithm library provides reusable operations such as sort, reverse, count, find, and binary_search. Include the appropriate standard headers in portable code.",
+            "Many algorithms accept iterator ranges written as [begin, end). This convention includes the first iterator but excludes the end iterator.",
+            "Understand the requirements of each algorithm. For example, binary_search expects a sorted range, and sorting a vector takes O(n log n) comparisons."
+        ],
+        question: [
+            "Sort a vector of integers and print the values in ascending order.",
+            "Use find to determine whether a target value appears in a vector."
+        ]
+    },
+    {
+        id: "s22",
+        parentId: "n8",
+        text: "Vector, Pair & Tuple",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "std::vector is a resizable sequence that stores elements contiguously and supports constant-time indexed access.",
+            "push_back and emplace_back append values. Reserve can allocate capacity ahead of time when the expected size is known.",
+            "std::pair groups two values, while std::tuple can group several. Structured bindings can give readable names to their elements.",
+            "Adding or removing elements can invalidate iterators or references depending on the operation. Check container documentation when retaining them."
+        ],
+        question: [
+            "Read N pairs of integers into a vector and print the pair with the largest first value.",
+            "Explain the difference between a vector's size and capacity."
+        ]
+    },
+    {
+        id: "s23",
+        parentId: "n8",
+        text: "Stack, Queue & Priority Queue",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "A stack is last-in, first-out and supports push, top, and pop. It is useful for parsing, undo histories, and depth-first processes.",
+            "A queue is first-in, first-out and supports push, front, and pop. It is commonly used for breadth-first search.",
+            "A priority_queue retrieves the highest-priority value first; by default, the largest value is on top. A comparator can create a min-heap.",
+            "These adapters hide their underlying container operations. Check empty() before accessing the top or removing an element."
+        ],
+        question: [
+            "Use a stack to check whether parentheses are balanced.",
+            "Use a queue to describe the order in which tasks are processed."
+        ]
+    },
+    {
+        id: "s24",
+        parentId: "n8",
+        text: "Sets, Maps & Frequency Counting",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "std::set stores unique keys in sorted order, and std::map stores sorted key-value pairs. Their common lookup and update operations take O(log n).",
+            "std::unordered_set and std::unordered_map use hashing and offer average constant-time lookup, but do not keep keys sorted.",
+            "Frequency maps count how often values occur. Use find or contains when you need to test for a key without inserting a default value.",
+            "Choose ordered containers when sorted traversal or predictable logarithmic operations matter; choose unordered containers for average-case lookup when ordering is unnecessary."
+        ],
+        question: [
+            "Count the occurrences of each integer in a vector using a map.",
+            "Remove duplicate values from a list while preserving sorted output."
+        ]
+    },
+    {
+        id: "s25",
+        parentId: "n8",
+        text: "Two Pointers & Sliding Window",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "The two-pointer technique uses two indexes that move through a sequence. It is useful for sorted arrays, pair searches, and in-place transformations.",
+            "A sliding window maintains a contiguous range and updates its state as the left or right boundary moves. This can avoid recomputing each range from scratch.",
+            "These techniques often reduce a nested-loop O(n squared) approach to O(n), but correctness depends on the input properties and movement rule.",
+            "Define what each pointer represents and prove why moving it cannot skip a valid answer. Test empty, smallest, duplicate, and boundary cases."
+        ],
+        question: [
+            "Given a sorted array, determine whether two values sum to a target using two pointers.",
+            "Find the longest contiguous window whose sum does not exceed a limit when all values are non-negative."
+        ]
+    },
+    {
+        id: "s26",
+        parentId: "n8",
+        text: "Greedy Algorithms",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "A greedy algorithm makes a locally attractive choice at each step. It is correct only when those choices can be shown to produce a globally optimal result.",
+            "Sorting by a useful property often reveals a greedy strategy, as in interval scheduling where finishing times help select compatible intervals.",
+            "A counterexample search is a valuable way to challenge a greedy idea. If a locally best choice can block a better overall solution, another method is needed.",
+            "When using a greedy algorithm, explain the exchange or stays-ahead argument that justifies each choice rather than relying only on sample tests."
+        ],
+        question: [
+            "Select the maximum number of non-overlapping intervals and justify the ordering rule.",
+            "Give an example where choosing the largest available coin first does not produce the fewest coins."
+        ]
+    },
+    {
+        id: "s27",
+        parentId: "n8",
+        text: "Dynamic Programming Foundations",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "Dynamic programming applies when a problem has overlapping subproblems and optimal substructure. Define a state that captures the information needed to solve a smaller instance.",
+            "Write a recurrence that describes how each state depends on smaller states, then identify base cases and the order in which states are computed.",
+            "Memoization stores results during recursive evaluation; tabulation fills a table iteratively. Both avoid repeating the same subproblem.",
+            "Estimate the number of states and work per state to derive time and space complexity. Validate the recurrence on tiny inputs before optimizing memory."
+        ],
+        question: [
+            "Define a state and recurrence for the number of ways to climb N steps using steps of one or two.",
+            "Implement the Fibonacci recurrence using bottom-up tabulation and explain its complexity."
+        ]
+    },
+    {
+        id: "s28",
+        parentId: "n8",
+        text: "Trees & Graph Traversal",
+        isSubnode: true,
+        link: [],
+        compiler: false,
+        content: [
+            "A tree is a connected acyclic graph. Rooted trees organize nodes by parent-child relationships, while binary trees allow at most two children per node.",
+            "Graphs can be represented with adjacency lists or matrices. Adjacency lists are usually memory-efficient for sparse graphs.",
+            "Depth-first search explores a path before backtracking; breadth-first search explores nodes by distance in an unweighted graph. Track visited nodes to avoid repeated work.",
+            "A traversal of a graph with V vertices and E edges takes O(V + E) time with an adjacency-list representation."
+        ],
+        question: [
+            "Represent an undirected graph with an adjacency list and print a BFS traversal.",
+            "Explain why graph traversal needs a visited set even when the input is described as a graph."
+        ]
+    }
 
-
-]
+];

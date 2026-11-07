@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { apiRequest, AUTH_CHANGE_EVENT, getAuthToken, setAuthToken } from "./api";
 import Map from "./Map";
 import Map2 from "./Map2"
@@ -8,7 +8,19 @@ import C from "./C";
 import Profile from "./Profile";
 import AuthPage from "./Login";
 import HomePage from "./Home";
+import InfoPage from "./InfoPage";
+import WebDevMap from "./WebDevMap";
 import "./loader.css";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const [user, setUser] = useState(null);
@@ -72,12 +84,19 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/login" element={!user ? <AuthPage onLogin={handleLogin} initialMessage={authMessage} /> : <Navigate to="/skills" />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<InfoPage page="about" />} />
+        <Route path="/how-it-works" element={<InfoPage page="how-it-works" />} />
+        <Route path="/contact" element={<InfoPage page="contact" />} />
+        <Route path="/feedback" element={<InfoPage page="feedback" />} />
+        <Route path="/terms" element={<InfoPage page="terms" />} />
         <Route path="/profile" element={user ? <Profile user={user} onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/details_c" element={user ? <Map user={user} /> : <Navigate to="/login" />} />
         <Route path="/details_dsa" element={user ? <Map2 user={user} /> : <Navigate to="/login" />} />
+        <Route path="/web-development" element={user ? <WebDevMap user={user} /> : <Navigate to="/login" />} />
         <Route path="/c" element={user ? <C user={user} /> : <Navigate to="/login" />} />
         <Route path="/skills" element={user ? <Skills user={user} /> : <Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/" />} />

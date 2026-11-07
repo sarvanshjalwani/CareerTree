@@ -12,6 +12,7 @@ import registerHeatmapRoutes from "./heatserver.js";
 import { fileURLToPath } from "node:url";
 import process from "node:process";
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
+import { filterRelatedTopics } from "./trendsUtils.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
@@ -789,7 +790,7 @@ app.get("/api/related-topics/:keyword", trendsRateLimit, validateTrendKeyword, a
     const data = await getCachedOrFetchTrends(req.params.keyword);
     res.json({
       keyword: data.keyword,
-      related_topics: data.related_topics,
+      related_topics: filterRelatedTopics(req.params.keyword, data.related_topics),
       success: data.success,
     });
   } catch (err) {
@@ -800,7 +801,11 @@ app.get("/api/related-topics/:keyword", trendsRateLimit, validateTrendKeyword, a
 
 app.get("/api/trends/:keyword", trendsRateLimit, validateTrendKeyword, async (req, res) => {
   try {
-    res.json(await getCachedOrFetchTrends(req.params.keyword));
+    const data = await getCachedOrFetchTrends(req.params.keyword);
+    res.json({
+      ...data,
+      related_topics: filterRelatedTopics(req.params.keyword, data.related_topics),
+    });
   } catch (err) {
     console.error("Combined Trends fetch failed:", err.message);
     res.status(500).json({ error: "Failed to fetch Trends data.", success: false });

@@ -56,6 +56,10 @@ const Trends = () => {
   return (
     <div className="trends-container">
       <h2 className="trends-title">Trends</h2>
+      <p className="trends-description">
+        Explore relative Google search interest over time and discover related
+        topics. Interest is an indexed measure, not an exact search count.
+      </p>
       <form onSubmit={handleSubmit} className="trends-form">
         <input
           type="text"

@@ -119,16 +119,25 @@ export default function Profile({ user, onLogout, backendURL = "http://localhost
   };
   const skills = [
     { name: "C", completed: progress["C"] || 0, goal: 31 },
-    { name: "DSA", completed: progress["DSA"] || 0, goal: 15 },
+    { name: "DSA", completed: progress["DSA"] || 0, goal: 28 },
+    { name: "Web Development", completed: progress["Web Development"] || 0, goal: 20 },
   ];
   return (
     <div className="page">
       <Vines />
       <Header />
       <h1 className="title">🚀 My Coding Roadmap</h1>
+      <p className="profile-intro">
+        Your learning dashboard brings together completed roadmap topics, coding
+        profile statistics, activity history, and technology search trends.
+        Connect your public handles below to view available problem-solving stats.
+      </p>
       <div className="sp">
       <div className="section">
         <h2>👤 Coding Handles</h2>
+        <p className="section-help">
+          Add your public Codeforces handle or LeetCode username to load stats from those services.
+        </p>
         {editMode || !cfHandle || !lcUsername ? (
           <div className="handles-form">
             <input
@@ -157,6 +166,7 @@ export default function Profile({ user, onLogout, backendURL = "http://localhost
       </div>
       <div className="section">
         <h2>📚 Skill Progress</h2>
+        <p className="section-help">Your completed topics are saved to your Career Tree account.</p>
         {skills.map((skill) => {
           const percent = (skill.completed / skill.goal) * 100;
           return (

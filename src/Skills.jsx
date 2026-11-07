@@ -15,6 +15,9 @@ const Skills = ({ user, backendURL = "http://localhost:5000" }) => {
   const handleCourseClickD = () => {
     navigate("/details_dsa"); 
   };
+  const handleCourseClickWeb = () => {
+    navigate("/web-development");
+  };
   const userId = user.userId;
   useEffect(() => {
     if (!userId) return;
@@ -55,10 +58,20 @@ const Skills = ({ user, backendURL = "http://localhost:5000" }) => {
     <>
       <Vines />
       <Header />
+      <main className="skills-page">
+        <section className="skills-intro">
+          <p className="skills-eyebrow">YOUR LEARNING PATH</p>
+          <h1>Choose a roadmap and grow your skills</h1>
+          <p>
+            Start with a topic that interests you, open its roadmap, and work through
+            the lessons at your own pace. Mark topics complete as you learn; your
+            progress is saved to your account.
+          </p>
+        </section>
       <div className="cards">
         <CourseCard
           title="C"
-          description="Begginer Language"
+          description="Build programming foundations with C, from the basics to practical concepts."
           logo="c.png"
           total={31}
           completed={progress["C"] || 0} 
@@ -67,14 +80,24 @@ const Skills = ({ user, backendURL = "http://localhost:5000" }) => {
         />
         <CourseCard
           title="DSA"
-          description="Top Structures and Algo"
+          description="Learn C++ fundamentals, core data structures, and problem-solving algorithms."
           logo="dsa.jpg"
-          total={15}
+          total={28}
           completed={progress["DSA"] || 0} 
           onClick={handleCourseClickD}
           toggleStep={(topic, isChecked) => toggleStep("DSA", topic, isChecked)} 
         />
+        <CourseCard
+          title="Web Development"
+          description="Build full-stack web skills with HTML, CSS, JavaScript, React, Node, and databases."
+          logo="logo.png"
+          total={20}
+          completed={progress["Web Development"] || 0}
+          onClick={handleCourseClickWeb}
+          toggleStep={(topic, isChecked) => toggleStep("Web Development", topic, isChecked)}
+        />
       </div>
+      </main>
       <Footer />
     </>
   );

@@ -43,6 +43,15 @@ int main() {
       <Vines/>
       <Header/>
     <div className="c-container">
+      <section className="lesson-guide">
+        <p>LEARN · PRACTICE · REVIEW</p>
+        <h1>Make this lesson your own</h1>
+        <span>
+          Read the lesson notes and watch the videos, then try the practice
+          questions. When the compiler is available, experiment with a small
+          program and compare its output with what you expect.
+        </span>
+      </section>
       <div className="title">{text}</div>
       <div className="player-container">
         {Array.isArray(link) &&
@@ -55,6 +64,14 @@ int main() {
                 height="100%"
                 allowFullScreen
               />
+              <a
+                className="video-open-link"
+                href={video.trim()}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Watch on YouTube
+              </a>
             </div>
           ))}
       </div>
@@ -78,6 +95,7 @@ int main() {
       {compiler && (
         <div className="compiler">
           <h3>Online Compiler</h3>
+          <p>Write or edit your C program, select Run Code, and review the compiler output below.</p>
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}

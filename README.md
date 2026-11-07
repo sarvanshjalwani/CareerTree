@@ -12,7 +12,8 @@ CareerTree is a full-stack web application designed to help developers manage th
 
 ## ✨ Key Features
 
-- **Learning Path Management**: Track progress across multiple learning maps with granular topic completion tracking
+- **Learning Path Management**: Track progress across C, C++/DSA, and full-stack Web Development roadmaps with granular topic completion tracking
+- **Roadmap Lessons**: Browse 20 Web Development lessons and an expanded C++/DSA path, with lesson explanations and practice prompts.
 - **Competitive Programming Integration**: Link and display your LeetCode and Codeforces profiles
 - **Progress Visualization**: Interactive heatmaps showing your learning activity and consistency
 - **Trend Analytics**: Cached Google Trends data with a daily scheduled refresh for selected technologies
@@ -252,6 +253,7 @@ CareerTree/
 - Configure `FRONTEND_ORIGIN` to the exact trusted frontend origin and use HTTPS in production.
 - The Trends cache is stored in MySQL. Cached results expire after 24 hours; scheduled keywords refresh daily at 00:00 UTC.
 - Trends API requests are rate-limited; scheduled refreshes cover JavaScript, Python, C++, React, and AI.
+- Related Trends topics are filtered to remove common generic, date, and location noise and prioritize topics matching the search or classified by Google as technical.
 
 ---
 

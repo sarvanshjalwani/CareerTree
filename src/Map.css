@@ -1,3 +1,32 @@
+.roadmap-intro {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 28px auto;
+  padding: 24px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 6px 18px rgba(20, 83, 45, 0.1);
+  text-align: center;
+}
+
+.roadmap-intro h1 {
+  margin: 6px 0 12px;
+  color: #166534;
+}
+
+.roadmap-intro p {
+  line-height: 1.65;
+}
+
+.roadmap-label {
+  margin: 0;
+  color: #15803d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
 .map-container {
   position: relative;
   min-height: 150vh;
@@ -11,6 +40,13 @@
   width: 90%;
   margin: 40px auto;
   padding: 20px 0px;
+}
+
+@media (max-width: 700px) {
+  .roadmap-intro {
+    margin: 20px 12px;
+    padding: 20px;
+  }
 }
 
 .map-svg {

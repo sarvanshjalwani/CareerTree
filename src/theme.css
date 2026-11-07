@@ -1,0 +1,213 @@
+:root {
+  color-scheme: light;
+  --page-bg: #f3f4f6;
+  --surface: #ffffff;
+  --surface-soft: #f0fdf4;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --border-color: #d1d5db;
+  --brand-green: #166534;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg: #101914;
+  --surface: #19251e;
+  --surface-soft: #203328;
+  --text-primary: #e5eee8;
+  --text-secondary: #b6c7bb;
+  --border-color: #3a5142;
+  --brand-green: #86efac;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text-primary);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+input,
+textarea,
+select {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .homepage,
+:root[data-theme="dark"] .page,
+:root[data-theme="dark"] .c-container,
+:root[data-theme="dark"] .map-container,
+:root[data-theme="dark"] .skills-page {
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .homepage {
+  background: linear-gradient(160deg, #14221a, #101914 70%);
+}
+
+:root[data-theme="dark"] .home-highlights article,
+:root[data-theme="dark"] .skills-intro,
+:root[data-theme="dark"] .course-card,
+:root[data-theme="dark"] .section,
+:root[data-theme="dark"] .stats-grid .card,
+:root[data-theme="dark"] .roadmap-intro,
+:root[data-theme="dark"] .content,
+:root[data-theme="dark"] .questions,
+:root[data-theme="dark"] .compiler,
+:root[data-theme="dark"] .lesson-guide,
+:root[data-theme="dark"] .trends-container,
+:root[data-theme="dark"] .info-card,
+:root[data-theme="dark"] .info-note {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .home-highlights h2,
+:root[data-theme="dark"] .skills-intro h1,
+:root[data-theme="dark"] .roadmap-intro h1,
+:root[data-theme="dark"] .roadmap-label,
+:root[data-theme="dark"] .course-title,
+:root[data-theme="dark"] .content,
+:root[data-theme="dark"] .compiler h3,
+:root[data-theme="dark"] .questions h3,
+:root[data-theme="dark"] .video-open-link,
+:root[data-theme="dark"] .info-card h2,
+:root[data-theme="dark"] .info-card a,
+:root[data-theme="dark"] .trends-title,
+:root[data-theme="dark"] .trends-subtitle {
+  color: var(--brand-green);
+}
+
+:root[data-theme="dark"] .home-highlights p,
+:root[data-theme="dark"] .skills-intro > p,
+:root[data-theme="dark"] .course-description,
+:root[data-theme="dark"] .profile-intro,
+:root[data-theme="dark"] .section-help,
+:root[data-theme="dark"] .section h2,
+:root[data-theme="dark"] .handles-display,
+:root[data-theme="dark"] .label,
+:root[data-theme="dark"] .info-card p,
+:root[data-theme="dark"] .info-note,
+:root[data-theme="dark"] .trends-description,
+:root[data-theme="dark"] .trends-loading,
+:root[data-theme="dark"] .trends-no-data,
+:root[data-theme="dark"] .trends-list-item,
+:root[data-theme="dark"] .content p,
+:root[data-theme="dark"] .questions li {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .info-page {
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(34, 92, 56, 0.3), transparent 34rem),
+    linear-gradient(145deg, #14221a 0%, #101914 52%, #1b3022 100%);
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .page-login {
+  background: #101914;
+}
+
+:root[data-theme="dark"] .card-login {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .title-login,
+:root[data-theme="dark"] .link,
+:root[data-theme="dark"] .input-login:focus {
+  color: var(--brand-green);
+}
+
+:root[data-theme="dark"] .subtitle-login,
+:root[data-theme="dark"] .auth-description,
+:root[data-theme="dark"] .form-login p {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .form-login input[type="text"] {
+  background: var(--surface-soft);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] header nav,
+:root[data-theme="dark"] footer {
+  background: #17241b;
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] header h1,
+:root[data-theme="dark"] .footer-col h1 {
+  color: #86efac;
+}
+
+:root[data-theme="dark"] header nav ul li a,
+:root[data-theme="dark"] .footer-col h3,
+:root[data-theme="dark"] .footer-col a {
+  color: #a7f3c0;
+}
+
+:root[data-theme="dark"] header nav ul li a:hover,
+:root[data-theme="dark"] .footer-col a:hover {
+  background: #263d2d;
+}
+
+:root[data-theme="dark"] .footer-bottom {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .trends-input,
+:root[data-theme="dark"] .handles-form input {
+  background: #111a14;
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .trends-button,
+:root[data-theme="dark"] .handles-form button {
+  background: #16803c;
+}
+
+:root[data-theme="dark"] .title {
+  color: var(--brand-green);
+  border-color: #45634e;
+}
+
+:root[data-theme="dark"] .handles-display strong,
+:root[data-theme="dark"] .skill-header {
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .progress-bar {
+  background: #34443a;
+}
+
+:root[data-theme="dark"] .text {
+  color: #102016;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

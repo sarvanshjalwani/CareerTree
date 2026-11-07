@@ -41,6 +41,19 @@
   background-color: #000;
 }
 
+.video-open-link {
+  display: inline-flex;
+  margin-top: 10px;
+  color: #166534;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.video-open-link:hover {
+  color: #15803d;
+}
+
 .content {
   max-width: 850px;
   margin: 20px auto;
@@ -103,4 +116,26 @@
   font-size: 1rem;
   line-height: 1.5;
   list-style-type: "➤ ";
+}
+.lesson-guide {
+  max-width: 850px;
+  margin: 12px auto 24px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #eaf7ed;
+  color: #2d5a3d;
+  line-height: 1.65;
+}
+
+.lesson-guide p {
+  margin: 0 0 6px;
+  color: #287044;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.lesson-guide h1 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
 }

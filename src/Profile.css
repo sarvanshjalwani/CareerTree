@@ -234,3 +234,16 @@
     width: 90%;
   }
 }
+.profile-intro {
+  max-width: 900px;
+  margin: 0 auto 24px;
+  padding: 0 20px;
+  color: #374151;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.section-help {
+  color: #4b5563;
+  line-height: 1.5;
+}

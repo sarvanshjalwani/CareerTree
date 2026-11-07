@@ -10,56 +10,21 @@ const HomePage = () => {
       <Vines />
       <Header />
       <main className="hero-section">
+        <p className="home-eyebrow">YOUR NEXT SKILL STARTS HERE</p>
         <h1>Grow Your Career, Branch by Branch 🌱</h1>
         <p>
-          Career Tree helps you explore and develop your skills to reach your dream career.
+          Build programming foundations with focused roadmaps, hands-on practice,
+          and progress tracking designed to keep you moving forward.
         </p>
-        <Link className="start-button" to="/login">
-          Start
-        </Link>
+        <div className="home-actions">
+          <Link className="start-button" to="/login">Start learning</Link>
+          <Link className="home-secondary-button" to="/about">Discover Career Tree</Link>
+        </div>
       </main>
-      <section id="about-us" className="hero-section">
-        <div className="section-content">
-          <h2>About Us</h2>
-          <p>
-            Career Tree is committed to empowering learners by providing interactive tools,
-            skill tracking, and personalized growth paths. Our mission is to make career
-            development accessible and engaging for everyone.
-          </p>
-        </div>
-      </section>
-      <section id="our-team" className="hero-section">
-        <div className="section-content">
-          <h2>Our Team</h2>
-          <p>
-            Our dedicated team of educators, developers, and career advisors work together
-            to ensure Career Tree offers the best experience for your personal and professional growth.
-          </p>
-        </div>
-      </section>
-      <section id="contact-us" className="hero-section">
-        <div className="section-content">
-          <h2>Contact Us</h2>
-          <p>Email: <a href="mailto:career.tree.support@example.com">carrertree010@gmail.com</a></p>
-        </div>
-      </section>
-      <section id="feedback" className="hero-section">
-        <div className="section-content">
-          <h2>Feedback</h2>
-          <p>We’d love to hear from you!</p>
-          <a className="feedback-button" href="mailto:career.tree.feedback@example.com">
-            Send Feedback
-          </a>
-        </div>
-      </section>
-      <section id="terms" className="hero-section">
-        <div className="section-content">
-          <h2>Terms of Use</h2>
-          <p>
-            By using Career Tree, you agree to our terms of use. We respect your privacy
-            and strive to provide a safe and helpful platform for career development.
-          </p>
-        </div>
+      <section className="home-highlights">
+        <article><span aria-hidden="true">🌿</span><h2>Learn in clear steps</h2><p>Follow focused paths through C, C++, data structures, and full-stack web development.</p></article>
+        <article><span aria-hidden="true">🧩</span><h2>Practice what you learn</h2><p>Open lessons, explore examples, and take on practice questions.</p></article>
+        <article><span aria-hidden="true">🌳</span><h2>Keep growing</h2><p>Save your progress and see your learning journey take shape.</p></article>
       </section>
 
       <Footer />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AUTH_CHANGE_EVENT, getAuthToken, setAuthToken } from "./api";
+import ThemeToggle from "./ThemeToggle";
 import "./Header.css";
 export default function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(Boolean(getAuthToken()));
@@ -22,15 +23,17 @@ export default function Header() {
       <nav>
         <h1> <img height="60" src="logo2.png" alt="" /> Career Tree</h1>
         <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/Skills">Skills</a></li>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/skills">Skills</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><ThemeToggle /></li>
           <li id="Profile">
-            <a href="/Profile"><img
+            <Link to="/profile"><img
               src="profile.png"
               alt="Profile"
               width="30"
               height="30"
-            /></a>
+            /></Link>
           </li>
           {isAuthenticated && (
             <li>
