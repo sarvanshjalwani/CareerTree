@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./Check.css";
+import { authFetch } from "./api";
 const Check = ({ text, map, userId, backendURL = "http://localhost:5000" }) => {
   const [checked, setChecked] = useState(false);
   useEffect(() => {
     if (!userId || !map || !text) return;
     const fetchStatus = async () => {
       try {
-        const res = await fetch(`${backendURL}/user_progress/status`, {
+        const res = await authFetch(`${backendURL}/user_progress/status`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, map, topic: text }),
+          body: JSON.stringify({ map, topic: text }),
         });
         const data = await res.json();
         setChecked(data.completed === 1);
@@ -24,10 +25,10 @@ const Check = ({ text, map, userId, backendURL = "http://localhost:5000" }) => {
     const newValue = !checked;
     setChecked(newValue);
     try {
-      await fetch(`${backendURL}/user_progress/update`, {
+      await authFetch(`${backendURL}/user_progress/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, map, topic: text, completed: newValue ? 1 : 0 }),
+        body: JSON.stringify({ map, topic: text, completed: newValue ? 1 : 0 }),
       });
     } catch (err) {
       console.error("Error updating progress:", err);

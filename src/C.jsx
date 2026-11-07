@@ -4,7 +4,8 @@ import "./C.css";
 import Header from "./Header";
 import Vines from "./Vines";
 import Footer from "./Footer";
-const C = ({user}) => {
+import { API_URL, authFetch } from "./api";
+const C = () => {
   const location = useLocation();
   const { link = [], content = [], text, compiler, question = [] } =
     location.state || {};
@@ -23,18 +24,17 @@ int main() {
     }
     return url;
   };
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const runCode = async () => {
     setOutput("⏳ Running...");
     try {
-      const res = await fetch(`${API_URL}/run`, {
+      const res = await authFetch(`${API_URL}/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
       const data = await res.json();
-      setOutput(data.error ? data.error : data.output);
-    } catch (err) {
+      setOutput(data.error || data.output || "Program finished without output.");
+    } catch {
       setOutput("❌ Error connecting to compiler server");
     }
   };

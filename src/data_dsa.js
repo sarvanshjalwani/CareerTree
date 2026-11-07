@@ -680,10 +680,10 @@ content: [
             void printList() {
                 Node* curr = head;
                 while (curr != nullptr) {
-                    cout << curr->data << \" -> \";
+                    cout << curr->data << " -> ";
                     curr = curr->next;
                 }
-                cout << \"NULL\\n\";
+                cout << "NULL\\n";
             }
         };
         \`\`\``,

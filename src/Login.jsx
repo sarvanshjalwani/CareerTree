@@ -1,151 +1,86 @@
 import React, { useState } from "react";
+import { apiRequest } from "./api";
 import "./Login.css";
-export default function Login({ onLogin }) {
+
+async function postJson(path, body) {
+  return apiRequest(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+export default function Login({ onLogin, initialMessage = "" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessage);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState("login");
-  const backendURL = "http://localhost:5000";
-  const handleLogin = async () => {
-    if (!email || !password) return setMessage("Please enter email and password");
+
+  const submit = async (action) => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(`${backendURL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        onLogin({ email, userId: data.userId });
-      } else {
-        setMessage(data.error || "Login failed");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
+      await action();
+    } catch (error) {
+      setMessage(error.message || "Request failed.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
-  const handleSignup = async () => {
-    if (!email || !password) return setMessage("Please enter email and password");
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await fetch(`${backendURL}/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStep("verify");
-        setMessage("OTP sent to your email");
-      } else {
-        setMessage(data.error || "Signup failed");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
-    }
-    setLoading(false);
   };
 
-  const handleVerify = async () => {
-    if (!otp) return setMessage("Please enter OTP");
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await fetch(`${backendURL}/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        onLogin({ email, userId: data.userId });
-      } else {
-        setMessage(data.error || "Invalid OTP");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
-    }
-    setLoading(false);
+  const handleLogin = () => {
+    if (!email || !password) return setMessage("Enter your email and password.");
+    return submit(async () => onLogin(await postJson("/auth/login", { email, password })));
   };
-  const handleForgot = async () => {
-    if (!email) return setMessage("Please enter your email");
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await fetch(`${backendURL}/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStep("verifyReset");
-        setMessage("OTP sent to your email");
-      } else {
-        setMessage(data.error || "Failed to send OTP");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
-    }
-    setLoading(false);
+
+  const handleSignup = () => {
+    if (!email || !password) return setMessage("Enter your email and password.");
+    return submit(async () => {
+      const response = await postJson("/auth/signup", { email, password });
+      setStep("verify");
+      setMessage(response.message);
+    });
   };
-  const handleVerifyReset = async () => {
-    if (!otp) return setMessage("Please enter OTP");
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await fetch(`${backendURL}/verify-reset-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStep("reset");
-        setMessage("OTP verified. You can now reset your password.");
-      } else {
-        setMessage(data.error || "Invalid OTP");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
-    }
-    setLoading(false);
+
+  const handleVerifySignup = () => {
+    if (!otp) return setMessage("Enter the verification code from your email.");
+    return submit(async () => {
+      const session = await postJson("/auth/verify-signup", { email, otp });
+      onLogin(session);
+    });
   };
-  const handleResetPassword = async () => {
-    if (!newPassword) return setMessage("Please enter new password");
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await fetch(`${backendURL}/reset-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, newPassword }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setStep("login");
-        setMessage("Password reset successful. Please log in.");
-      } else {
-        setMessage(data.error || "Failed to reset password");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
-    }
-    setLoading(false);
+
+  const handleForgot = () => {
+    if (!email) return setMessage("Enter your email address.");
+    return submit(async () => {
+      const response = await postJson("/auth/forgot-password", { email });
+      setStep("reset");
+      setMessage(response.message);
+    });
   };
+
+  const handleResetPassword = () => {
+    if (!otp || !newPassword) {
+      return setMessage("Enter the reset code and your new password.");
+    }
+    return submit(async () => {
+      const response = await postJson("/auth/reset-password", { email, otp, newPassword });
+      setStep("login");
+      setOtp("");
+      setNewPassword("");
+      setMessage(response.message);
+    });
+  };
+
+  const switchStep = (nextStep) => {
+    setStep(nextStep);
+    setMessage("");
+    setOtp("");
+  };
+
   return (
     <div className="page-login">
       <div className="card-login">
@@ -154,157 +89,113 @@ export default function Login({ onLogin }) {
           {step === "login"
             ? "Sign in"
             : step === "signup"
-            ? "Create account"
-            : step === "verify"
-            ? "Verify OTP"
-            : step === "forgot"
-            ? "Forgot Password"
-            : step === "verifyReset"
-            ? "Verify Reset OTP"
-            : "Reset Password"}
+              ? "Create account"
+              : step === "verify"
+                ? "Verify your email"
+                : "Reset password"}
         </p>
-        {step === "login" && (
+        {step !== "verify" && (
           <div className="form-login">
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               className="input-login"
+              autoComplete="email"
             />
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-login"
-            />
-            <button
-              onClick={handleLogin}
-              disabled={loading}
-              className="button-login"
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-            <p>
-              <span onClick={() => setStep("forgot")} className="link">
-                Forgot password?
-              </span>
-            </p>
-            <p>
-              No account?{" "}
-              <span onClick={() => setStep("signup")} className="link">
-                Sign up
-              </span>
-            </p>
-          </div>
-        )}
-        {step === "signup" && (
-          <div className="form-login">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input-login"
-            />
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-login"
-            />
-            <button
-              onClick={handleSignup}
-              disabled={loading}
-              className="button-login"
-            >
-              {loading ? "Sending OTP..." : "Send OTP"}
-            </button>
-            <p>
-              Already have an account?{" "}
-              <span onClick={() => setStep("login")} className="link">
-                Login
-              </span>
-            </p>
+            {step === "signup" || step === "login" ? (
+              <input
+                type="password"
+                placeholder="Enter password (at least 8 characters)"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="input-login"
+                autoComplete={step === "signup" ? "new-password" : "current-password"}
+              />
+            ) : (
+              <>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  placeholder="6-digit reset code"
+                  value={otp}
+                  onChange={(event) => setOtp(event.target.value.replace(/\D/g, "").slice(0, 6))}
+                  className="input-login"
+                />
+                <input
+                  type="password"
+                  placeholder="New password (at least 8 characters)"
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  className="input-login"
+                  autoComplete="new-password"
+                />
+              </>
+            )}
+            {step === "login" && (
+              <>
+                <button onClick={handleLogin} disabled={loading} className="button-login">
+                  {loading ? "Signing in..." : "Login"}
+                </button>
+                <p><span onClick={() => switchStep("forgot")} className="link">Forgot password?</span></p>
+                <p>
+                  No account?{" "}
+                  <span onClick={() => switchStep("signup")} className="link">Sign up</span>
+                </p>
+              </>
+            )}
+            {step === "signup" && (
+              <>
+                <button onClick={handleSignup} disabled={loading} className="button-login">
+                  {loading ? "Sending code..." : "Sign up"}
+                </button>
+                <p>
+                  Already registered?{" "}
+                  <span onClick={() => switchStep("login")} className="link">Login</span>
+                </p>
+              </>
+            )}
+            {step === "forgot" && (
+              <>
+                <button onClick={handleForgot} disabled={loading} className="button-login">
+                  {loading ? "Sending code..." : "Send password reset code"}
+                </button>
+                <p><span onClick={() => switchStep("login")} className="link">Back to login</span></p>
+              </>
+            )}
+            {step === "reset" && (
+              <>
+                <button onClick={handleResetPassword} disabled={loading} className="button-login">
+                  {loading ? "Updating password..." : "Reset password"}
+                </button>
+                <p><span onClick={() => switchStep("forgot")} className="link">Send a new reset code</span></p>
+              </>
+            )}
           </div>
         )}
         {step === "verify" && (
           <div className="form-login">
             <input
               type="text"
-              placeholder="Enter OTP"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              maxLength={6}
+              placeholder="6-digit verification code"
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={(event) => setOtp(event.target.value.replace(/\D/g, "").slice(0, 6))}
               className="input-login"
             />
-            <button
-              onClick={handleVerify}
-              disabled={loading}
-              className="button-login"
-            >
-              {loading ? "Verifying..." : "Verify OTP"}
-            </button>
-          </div>
-        )}
-        {step === "forgot" && (
-          <div className="form-login">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input-login"
-            />
-            <button
-              onClick={handleForgot}
-              disabled={loading}
-              className="button-login"
-            >
-              {loading ? "Sending OTP..." : "Send OTP"}
+            <button onClick={handleVerifySignup} disabled={loading} className="button-login">
+              {loading ? "Verifying..." : "Verify email"}
             </button>
             <p>
-              <span onClick={() => setStep("login")} className="link">
-                Back to login
-              </span>
+              Code expired?{" "}
+              <span onClick={handleSignup} className="link">Send another code</span>
             </p>
-          </div>
-        )}
-        {step === "verifyReset" && (
-          <div className="form-login">
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              className="input-login"
-            />
-            <button
-              onClick={handleVerifyReset}
-              disabled={loading}
-              className="button-login"
-            >
-              {loading ? "Verifying..." : "Verify OTP"}
-            </button>
-          </div>
-        )}
-        {step === "reset" && (
-          <div className="form-login">
-            <input
-              type="password"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="input-login"
-            />
-            <button
-              onClick={handleResetPassword}
-              disabled={loading}
-              className="button-login"
-            >
-              {loading ? "Resetting..." : "Reset Password"}
-            </button>
+            <p><span onClick={() => switchStep("login")} className="link">Back to login</span></p>
           </div>
         )}
         {message && <p className="message">{message}</p>}

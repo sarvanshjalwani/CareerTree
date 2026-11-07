@@ -7,13 +7,13 @@ import axios from "axios";
 import "./Profile.css";
 import Trends from "./Trends"
 import Heatmap from "./Hello"
+import { authFetch } from "./api";
 export default function Profile({ user, onLogout, backendURL = "http://localhost:5000" }) {
   const [progress, setProgress] = useState({});
   const [cfHandle, setCfHandle] = useState("");
   const [lcUsername, setLcUsername] = useState("");
   const [cfSolved, setCfSolved] = useState(null);
   const [lcSolved, setLcSolved] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
@@ -22,10 +22,9 @@ export default function Profile({ user, onLogout, backendURL = "http://localhost
     if (!userId) return;
     const fetchProgress = async () => {
       try {
-        const res = await fetch(`${backendURL}/user_progress/steps`, {
+        const res = await authFetch(`${backendURL}/user_progress/steps`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
         });
         const data = await res.json();
         setProgress(data || {});
@@ -38,12 +37,10 @@ export default function Profile({ user, onLogout, backendURL = "http://localhost
   useEffect(() => {
     if (!userId) return;
     const fetchHandles = async () => {
-      setLoading(true);
       try {
-        const res = await fetch(`${backendURL}/user/handles`, {
+        const res = await authFetch(`${backendURL}/user/handles`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
         });
         const data = await res.json();
         if (data.codeforces_handle) setCfHandle(data.codeforces_handle);
@@ -53,8 +50,6 @@ export default function Profile({ user, onLogout, backendURL = "http://localhost
         }
       } catch (err) {
         console.error("Error fetching handles:", err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchHandles();
@@ -95,11 +90,10 @@ export default function Profile({ user, onLogout, backendURL = "http://localhost
     if (!cfHandle && !lcUsername) return alert("Enter at least one handle!");
     setSaving(true);
     try {
-      const res = await fetch(`${backendURL}/user/update_handles`, {
+      const res = await authFetch(`${backendURL}/user/update_handles`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId,
           codeforces_handle: cfHandle,
           leetcode_username: lcUsername,
         }),

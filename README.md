@@ -15,9 +15,9 @@ CareerTree is a full-stack web application designed to help developers manage th
 - **Learning Path Management**: Track progress across multiple learning maps with granular topic completion tracking
 - **Competitive Programming Integration**: Link and display your LeetCode and Codeforces profiles
 - **Progress Visualization**: Interactive heatmaps showing your learning activity and consistency
-- **Trend Analytics**: Real-time Google Trends data to identify emerging technologies and topics
-- **User Authentication**: Secure signup/login with email OTP verification
-- **Password Recovery**: OTP-based password reset functionality
+- **Trend Analytics**: Cached Google Trends data with a daily scheduled refresh for selected technologies
+- **User Authentication**: JWT sessions, bcrypt password hashing, and email OTP verification
+- **Password Recovery**: OTP-verified password reset
 - **C Code Compilation**: In-browser C code compilation and execution
 - **Responsive UI**: Built with React and modern web technologies
 
@@ -38,9 +38,10 @@ CareerTree is a full-stack web application designed to help developers manage th
 - **Express** 5.1.0 - Web framework
 - **Node.js** - Runtime environment
 - **MySQL2** 3.15.3 - Database driver
-- **Nodemailer** 7.0.9 - Email service
-- **Bcrypt** 6.0.0 - Password hashing
-- **Firebase** 12.4.0 - Backend services
+- **bcrypt** - Password hashing
+- **jsonwebtoken** - JWT sessions
+- **Nodemailer** - Email OTP delivery
+- **node-cron** - Scheduled Trends refresh
 - **SerpAPI** 2.2.1 - Google Trends API
 
 ### Development
@@ -52,7 +53,7 @@ CareerTree is a full-stack web application designed to help developers manage th
 ## 📦 Installation
 
 ### Prerequisites
-- Node.js (v16 or higher)
+- Node.js (v22 or higher)
 - npm or yarn
 - MySQL database
 - `.env` file with required environment variables
@@ -72,19 +73,28 @@ npm install
 
 3. **Configure environment variables**
 
-Create a `.env` file in the root directory:
+Copy `.env.example` to `.env` (`Copy-Item .env.example .env` in PowerShell) and configure MySQL, Gmail SMTP, and server secrets. Set `EMAIL_USER` to the app's sender Gmail account and `EMAIL_PASS` to its Google App Password; users only provide their own email addresses. To create a Gmail App Password, enable 2-Step Verification on the sender account, then create an App Password in the Google Account security settings.
+
+Generate separate random values of at least 32 characters for `JWT_SECRET` and `OTP_SECRET`. Keep all credentials server-side and never commit `.env`.
+
+On Windows PowerShell, generate each secret with:
+```powershell
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+Run it twice and put the two different values in `.env`.
+
+Example `.env` values:
 ```env
-# Database
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=your_password
 DB_NAME=careertree
 
-# Email Service
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_app_password
-
-# API Keys
+JWT_SECRET=long_random_server_secret
+OTP_SECRET=different_long_random_server_secret
+EMAIL_USER=your_gmail_address@gmail.com
+EMAIL_PASS=your_google_app_password
+FRONTEND_ORIGIN=http://localhost:5173
 SERPAPI_KEY=your_serpapi_key
 ```
 
@@ -95,7 +105,7 @@ Create the required tables:
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NULL,
   codeforces_handle VARCHAR(255),
   leetcode_username VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -112,6 +122,10 @@ CREATE TABLE user_progress (
   UNIQUE KEY unique_progress (user_id, map_name, topic_name)
 );
 ```
+
+For an existing database, back it up and run [`migrations/001_auth_and_trends_cache.sql`](./migrations/001_auth_and_trends_cache.sql) before starting the updated backend. Existing Firebase users must sign up again and verify the same email address; their progress and profile rows are preserved, and the verified registration replaces the old password value with a bcrypt hash.
+
+Run the same migration after creating the tables above for a fresh database; it creates the OTP challenge and Trends cache tables required by the server.
 
 ---
 
@@ -151,12 +165,13 @@ npm run preview
 ## 📚 API Endpoints
 
 ### Authentication
-- `POST /signup` - Register with email and password
-- `POST /login` - Login with email and password
-- `POST /verify-otp` - Verify OTP for signup
-- `POST /forgot-password` - Request password reset OTP
-- `POST /verify-reset-otp` - Verify reset OTP
-- `POST /reset-password` - Update password
+- `POST /auth/signup` - Hash a password and send an email verification OTP
+- `POST /auth/verify-signup` - Verify the OTP, create/update the account, and return a JWT
+- `POST /auth/login` - Verify the password and return a JWT
+- `GET /auth/me` - Validate the bearer JWT and return the current user
+- `POST /auth/forgot-password` - Send a reset OTP when the account exists
+- `POST /auth/reset-password` - Verify reset OTP and store a new bcrypt password hash
+- Protected endpoints require `Authorization: Bearer <JWT>`.
 
 ### User Profile
 - `POST /user/handles` - Get LeetCode and Codeforces handles
@@ -173,7 +188,7 @@ npm run preview
 - `GET /api/trends/:keyword` - Get combined trends data
 
 ### Tools
-- `POST /run` - Compile and execute C code
+- `POST /run` - Compile and execute C code (JWT required; bounded compiler worker)
 
 ---
 
@@ -181,10 +196,9 @@ npm run preview
 
 ### Get User Progress
 ```javascript
-fetch('http://localhost:5000/user_progress/steps', {
+authFetch('http://localhost:5000/user_progress/steps', {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ userId: 1 })
+  headers: { 'Content-Type': 'application/json' }
 })
 .then(res => res.json())
 .then(data => console.log(data));
@@ -192,17 +206,18 @@ fetch('http://localhost:5000/user_progress/steps', {
 
 ### Update Learning Progress
 ```javascript
-fetch('http://localhost:5000/user_progress/update', {
+authFetch('http://localhost:5000/user_progress/update', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    userId: 1,
     map: 'JavaScript Fundamentals',
     topic: 'Arrays',
     completed: 1
   })
 })
 ```
+
+These authenticated endpoints require the app's JWT. In the React app, use the `authFetch` helper from `src/api.js` instead of calling `fetch` directly.
 
 ### Fetch Trends Data
 ```javascript
@@ -229,14 +244,14 @@ CareerTree/
 
 ---
 
-## 🔐 Security Considerations
+## 🔐 Security Notes
 
-- Passwords should be hashed using bcrypt before storage
-- OTP tokens expire after 5 minutes
-- Use environment variables for sensitive data
-- Enable CORS only for trusted origins in production
-- Implement rate limiting on authentication endpoints
-- Use HTTPS in production
+- Passwords are stored as bcrypt hashes. OTPs are HMAC-hashed, expire after five minutes, and allow at most five verification attempts. Authentication routes are rate-limited.
+- JWTs expire after 12 hours. Keep `JWT_SECRET`, `OTP_SECRET`, and SMTP credentials server-side.
+- The GCC route uses unique temporary workspaces, per-process compile/runtime timeouts, process-tree termination, output caps, a concurrency limit, and rate limiting. Programs still run as child processes on the host: this is **not a security sandbox** and should not be exposed as a public code-execution service.
+- Configure `FRONTEND_ORIGIN` to the exact trusted frontend origin and use HTTPS in production.
+- The Trends cache is stored in MySQL. Cached results expire after 24 hours; scheduled keywords refresh daily at 00:00 UTC.
+- Trends API requests are rate-limited; scheduled refreshes cover JavaScript, Python, C++, React, and AI.
 
 ---
 
@@ -247,13 +262,14 @@ CareerTree/
 - Check `.env` credentials
 - Ensure database exists
 
-### Email Not Sending
-- Verify Gmail app password in `.env`
-- Enable "Less secure app access" or use app-specific passwords
-- Check internet connection
+### Authentication or OTP Email Not Working
+- Confirm `JWT_SECRET`, `OTP_SECRET`, `EMAIL_USER`, and `EMAIL_PASS` are set in the root `.env`.
+- Use a Gmail App Password and confirm MySQL is running with the migration applied.
+- Restart the backend after editing `.env` and check its terminal for SMTP or database errors.
 
 ### C Compilation Errors
-- Ensure GCC is installed on the system
+- Ensure GCC is installed and available on the server's `PATH`.
+- The host-process runner is not an operating-system sandbox.
 - Check code syntax
 - Review compiler output for details
 

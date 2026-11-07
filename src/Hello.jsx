@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
-import axios from "axios";
+import { API_URL, authFetch } from "./api";
 import "react-calendar-heatmap/dist/styles.css";
 export default function Heatmap({ userId }) {
     const [data, setData] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log("📡 Fetching heatmap data for user:", userId);
-                const res = await axios.get(`http://localhost:5000/heatmap/${userId}`);
-                console.log("✅ Heatmap data from backend:", res.data);
-                setData(res.data || []);
+                const res = await authFetch(`${API_URL}/heatmap`);
+                const data = await res.json();
+                setData(data || []);
             } catch (err) {
-                console.error("❌ Error fetching heatmap data:", err);
+                console.error("Error fetching heatmap data:", err);
             }
         };
         if (userId) fetchData();

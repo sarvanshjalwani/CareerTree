@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   LineChart,
   Line,
@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { API_URL } from "./api";
 import "./Trends.css"
 const Trends = () => {
   const [keyword, setKeyword] = useState("");
@@ -25,7 +26,7 @@ const Trends = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:5000/api/trends/${encodeURIComponent(kw)}`);
+      const res = await fetch(`${API_URL}/api/trends/${encodeURIComponent(kw)}`);
       if (!res.ok) throw new Error("Network response was not ok");
       const data = await res.json();
       const timelineData = data.timeline_data || [];

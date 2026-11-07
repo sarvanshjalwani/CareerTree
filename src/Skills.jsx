@@ -5,6 +5,7 @@ import "./Skills.css";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import CourseCard from "./Card1";
+import { authFetch } from "./api";
 const Skills = ({ user, backendURL = "http://localhost:5000" }) => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState({}); 
@@ -19,10 +20,9 @@ const Skills = ({ user, backendURL = "http://localhost:5000" }) => {
     if (!userId) return;
     const fetchProgress = async () => {
       try {
-        const res = await fetch(`${backendURL}/user_progress/steps`, {
+        const res = await authFetch(`${backendURL}/user_progress/steps`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
         });
         const data = await res.json(); 
         setProgress(data);
@@ -34,11 +34,10 @@ const Skills = ({ user, backendURL = "http://localhost:5000" }) => {
   }, [userId, backendURL]);
   const toggleStep = async (map, topic, isChecked) => {
     try {
-      await fetch(`${backendURL}/user_progress/update`, {
+      await authFetch(`${backendURL}/user_progress/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId,
           map,
           topic,
           completed: isChecked ? 1 : 0
